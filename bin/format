@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+const parseArgs = require('minimist')
+const fse = require('fs-extra')
+

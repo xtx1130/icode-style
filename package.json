@@ -1,0 +1,22 @@
+{
+  "name": "icode-style",
+  "version": "1.0.0",
+  "description": "icode code style standard",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "cd test && node lint.test.js"
+  },
+  "keywords": [
+    "icode",
+    "style"
+  ],
+  "author": "tb-fe",
+  "license": "MIT",
+  "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.10.0",
+    "fs-extra": "^7.0.1",
+    "minimist": "^1.2.0",
+    "prettier": "^1.15.3"
+  }
+}
