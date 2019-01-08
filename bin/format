@@ -1,5 +1,46 @@
 #!/usr/bin/env node
 
+const fs = require('fs')
 const parseArgs = require('minimist')
 const fse = require('fs-extra')
+const klaw = require('klaw')
+const through2 = require('through2')
+const jsLint = require('../src/jslint')
+const cssLint = require('../src/csslint')
+const vueLint = require('../src/vueLint')
 
+const argv = parseArgs(process.argv.slice(2))
+let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|output|dist|BCLOUD|package\\.json|build\\.js|ci\\.yml|readme|favicon\\.ico|\\.map$'
+
+const excludeFolder = through2.obj(function (item, enc, next) {
+  if (!item.stats.isDirectory() && !item.path.match(new RegExp('(' + expectFiles + ')', 'ig'))) 
+    this.push(item)
+  next()
+})
+klaw(process.cwd()).pipe(excludeFolder)
+  .on('data', (item) => {
+    if (item.path.match(/\.js$/ig)) {
+      // let baseCode = fs.readFileSync(item.path, 'utf-8')
+      // let msg = jsLint(baseCode, item.path)
+      // if(!msg.fixed){
+      //   console.log(`${item.path} format failed`, msg)
+      //   for(let i = 0; i < msg.messages.length; i++) {
+      //     console.log('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
+      //   }
+      // }
+    } else if(item.path.match(/\.css$/ig)) {
+      // let baseCode = fs.readFileSync(item.path, 'utf-8')
+      // let output = cssLint(baseCode)
+      // fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
+    } else if(item.path.match(/\.vue$/ig)) {
+      let baseCode = fs.readFileSync(item.path, 'utf-8')
+      let msg = vueLint(baseCode, item.path)
+      console.log(msg)
+      if(!msg.fixed){
+        console.log(`${item.path} format failed`, msg)
+        for(let i = 0; i < msg.messages.length; i++) {
+          console.log('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
+        }
+      }
+    }
+  })
