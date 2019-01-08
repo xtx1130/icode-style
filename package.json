@@ -2,6 +2,9 @@
   "name": "icode-style",
   "version": "1.0.0",
   "description": "icode code style standard",
+  "bin": {
+    "tbformat": "./bin/format"
+  },
   "main": "./src/index.js",
   "scripts": {
     "test": "cd test && node lint.test.js"
@@ -16,7 +19,9 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.10.0",
     "fs-extra": "^7.0.1",
+    "klaw": "^3.0.0",
     "minimist": "^1.2.0",
-    "prettier": "^1.15.3"
+    "prettier": "^1.15.3",
+    "through2": "^3.0.0"
   }
 }
