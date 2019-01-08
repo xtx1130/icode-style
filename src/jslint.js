@@ -13,8 +13,6 @@ exports = module.exports = function (code, filePath) {
   })
   if (msg.fixed){
     filePath && fs.writeFileSync(filePath, msg.output, 'utf-8')
-    return msg
   }
-  else
-    return msg.messages
+  return msg
 }
