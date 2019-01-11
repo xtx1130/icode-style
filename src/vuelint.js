@@ -30,5 +30,9 @@
 const prettier = require("prettier")
 
 exports = module.exports = function (code) {
-    return prettier.format(code, {parser: 'vue'})
+    return prettier.format(code, {
+        parser: 'vue',
+        tabWidth: 4,
+        semi: true
+    })
 }

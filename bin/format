@@ -34,13 +34,7 @@ klaw(process.cwd()).pipe(excludeFolder)
       // fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     } else if(item.path.match(/\.vue$/ig)) {
       let baseCode = fs.readFileSync(item.path, 'utf-8')
-      let msg = vueLint(baseCode, item.path)
-      console.log(msg)
-      if(!msg.fixed){
-        console.log(`${item.path} format failed`, msg)
-        for(let i = 0; i < msg.messages.length; i++) {
-          console.log('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
-        }
-      }
+      let code = vueLint(baseCode, item.path)
+      console.log(code)
     }
   })
