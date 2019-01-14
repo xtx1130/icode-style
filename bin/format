@@ -20,21 +20,30 @@ const excludeFolder = through2.obj(function (item, enc, next) {
 klaw(process.cwd()).pipe(excludeFolder)
   .on('data', (item) => {
     if (item.path.match(/\.js$/ig)) {
-      // let baseCode = fs.readFileSync(item.path, 'utf-8')
-      // let msg = jsLint(baseCode, item.path)
-      // if(!msg.fixed){
-      //   console.log(`${item.path} format failed`, msg)
-      //   for(let i = 0; i < msg.messages.length; i++) {
-      //     console.log('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
-      //   }
-      // }
+      let baseCode = fs.readFileSync(item.path, 'utf-8')
+      let msg
+      if(argv.fix)
+        msg = jsLint(baseCode, item.path)
+      else
+        msg = jsLint(baseCode)
+      if(!msg.fixed && argv.fix){
+        console.log(`${item.path} format failed:`)
+        for(let i = 0; i < msg.messages.length; i++) {
+          console.log('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
+        }
+      } else {
+        console.log(`${item.path} lint info:`)
+        for (let i = 0;i < msg.length; i++) {
+          console.log('Line:' + msg[i].line + ' ' + msg[i].message)
+        }
+      }
     } else if(item.path.match(/\.css$/ig)) {
-      // let baseCode = fs.readFileSync(item.path, 'utf-8')
-      // let output = cssLint(baseCode)
-      // fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
+      let baseCode = fs.readFileSync(item.path, 'utf-8')
+      let output = cssLint(baseCode)
+      argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     } else if(item.path.match(/\.vue$/ig)) {
       let baseCode = fs.readFileSync(item.path, 'utf-8')
-      let code = vueLint(baseCode, item.path)
-      console.log(code)
+      let output = vueLint(baseCode, item.path)
+      argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     }
   })
