@@ -39,11 +39,13 @@ klaw(process.cwd()).pipe(excludeFolder)
       }
     } else if(item.path.match(/\.css$/ig)) {
       let baseCode = fs.readFileSync(item.path, 'utf-8')
-      let output = cssLint(baseCode)
+      let output = cssLint(baseCode, argv.fix)
+      console.log(output)
       argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     } else if(item.path.match(/\.vue$/ig)) {
       let baseCode = fs.readFileSync(item.path, 'utf-8')
-      let output = vueLint(baseCode, item.path)
+      let output = vueLint(baseCode, argv.fix)
+      console.log(output)
       argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     }
   })
