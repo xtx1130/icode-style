@@ -5,10 +5,12 @@ const parseArgs = require('minimist')
 const fse = require('fs-extra')
 const klaw = require('klaw')
 const through2 = require('through2')
+const Log = require('@xtx1130/tb-log').Log
 const jsLint = require('../src/jslint')
 const cssLint = require('../src/csslint')
 const vueLint = require('../src/vueLint')
 
+const log = new Log('lint', false)
 const argv = parseArgs(process.argv.slice(2))
 let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|output|dist|BCLOUD|package\\.json|build\\.js|ci\\.yml|readme|favicon\\.ico|\\.map$'
 
@@ -27,25 +29,31 @@ klaw(process.cwd()).pipe(excludeFolder)
       else
         msg = jsLint(baseCode)
       if(!msg.fixed && argv.fix){
-        console.log(`${item.path} format failed:`)
+        log.error(`${item.path} format failed:`)
         for(let i = 0; i < msg.messages.length; i++) {
-          console.log('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
+          log.error('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
         }
       } else {
-        console.log(`${item.path} lint info:`)
+        log.warn(`${item.path} lint info:`)
         for (let i = 0;i < msg.length; i++) {
-          console.log('Line:' + msg[i].line + ' ' + msg[i].message)
+          log.warn('Line:' + msg[i].line + ' ' + msg[i].message)
         }
       }
     } else if(item.path.match(/\.css$/ig)) {
       let baseCode = fs.readFileSync(item.path, 'utf-8')
       let output = cssLint(baseCode, argv.fix)
-      console.log(output)
+      if(output === false){
+        log.error(`${item.path} has not been lint yet!`)
+        process.exit(1)
+      }
       argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     } else if(item.path.match(/\.vue$/ig)) {
       let baseCode = fs.readFileSync(item.path, 'utf-8')
       let output = vueLint(baseCode, argv.fix)
-      console.log(output)
+      if(output === false){
+        log.error(`${item.path} has not been lint yet!`)
+        process.exit(1)
+      }
       argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     }
   })

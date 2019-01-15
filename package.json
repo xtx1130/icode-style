@@ -17,6 +17,7 @@
   "author": "tb-fe",
   "license": "MIT",
   "dependencies": {
+    "@xtx1130/tb-log": "^2.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.10.0",
     "fs-extra": "^7.0.1",
