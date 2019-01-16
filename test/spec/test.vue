@@ -2,28 +2,24 @@
     <div class="operation-main">
         <div class="operation-timecard">
             <p class="operation-title">
-                <span v-if="last_time">7天试运营期限</span>
-                <span v-else>7天试运营期限已结束</span>
-                <img src="../img/icon_common_ explain_20@3x.png" @click="handleTipShow"  v-if="last_time">
+                <span v-if="last_time">ceshi</span>
+                <span v-else>test</span>
             </p>
             <p class="operation-over-tip" v-show="last_time <= 0">
                 <template v-if="!review">
-                    由于吧主们的热情高涨，审核信息较多，我们正在加班加点审核中，不要着急哦~
+                    ending
                 </template>
                 <template v-else>
-                    七天试运行期限已结束，请等待系统结算~
+                    ending else
                 </template>
             </p>
-            <p class="operation-last" v-show="last_time">还剩</p>
+            <p class="operation-last" v-show="last_time">last</p>
             <p class="operation-time"  v-show="last_time">
                 <span class="operation-time-num">{{day}}</span><span class="operation-time-ex" style="margin-right:9px">天</span>
                 <span class="operation-time-num">{{hour}}</span><span class="operation-time-ex" style="margin-right:-4px;left: -4px;">小时</span>
                 <span class="operation-time-num">{{min}}</span><span class="operation-time-ex">分</span>
             </p>
         </div>
-        <BawuConfirm ref="confirmTip" :type="1" sureBtnText="知道了">
-            您需要在七天内完成试运营目标，否则您的吧会被解散哦~
-        </BawuConfirm>
     </div>
 </template>
 

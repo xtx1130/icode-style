@@ -2,10 +2,44 @@
 
 const fs = require('fs')
 const path = require('path')
-const jsLint = require('../src/jslint')
-const cssLint = require('../src/csslint')
+const lint = require('../src/')
 
-let jsFile = fs.readFileSync(path.join(__dirname, 'spec', 'test.js'), 'utf-8')
-let cssFile = fs.readFileSync(path.join(__dirname, 'spec', 'test.css'), 'utf-8')
+describe('css lint must has a return', () => {
+  let code = fs.readFileSync(path.join(__dirname, '/spec', 'test.css')).toString()
+  it('Should return code in isfix mode', () => {
+    let val = lint.cssLint(code, true)
+    expect(/test/.test(val)).toBe(true)
+  })
+  it('Should return Boolean in default mode', () => {
+    let val = lint.cssLint(code)
+    expect(val).toBe(false)
+  })
+})
 
-console.log(jsLint(jsFile), cssLint(cssFile))
+describe('js lint must have a return', () => {
+  let file = path.join(__dirname, 'test.lint.js')
+  afterAll(() => {
+    fs.unlinkSync(file)
+  })
+  let code = fs.readFileSync(path.join(__dirname, '/spec', 'test.js')).toString()
+  it('Should return Array in default mode', () => {
+    let val = lint.jsLint(code)
+    expect(Array.isArray(val)).toBe(true)
+  })
+  it('Should write to files in fix mode', () => {
+    let val = lint.jsLint(code, file)
+    expect(/ktest/.test(fs.readFileSync(file).toString())).toBe(true)
+  })
+})
+
+describe('vue lint must have a return', () => {
+  let code = fs.readFileSync(path.join(__dirname, '/spec', 'test.vue')).toString()
+  it('Should return code in isfix mode', () => {
+    let val = lint.vueLint(code, true)
+    expect(/test/.test(val)).toBe(true)
+  })
+  it('Should return Boolean in default mode', () => {
+    let val = lint.vueLint(code)
+    expect(val).toBe(false)
+  })
+})
