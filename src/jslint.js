@@ -1,6 +1,6 @@
 'use strict'
 
-const Linter = require("eslint").Linter
+const Linter = require('eslint').Linter
 const fs = require('fs')
 const rules = require('./rules.json')
 
@@ -8,7 +8,7 @@ const linter = new Linter()
 
 exports = module.exports = function (code, filePath) {
   let msg
-  if(filePath){
+  if (filePath) {
     msg = linter.verifyAndFix(code, {
       rules,
       parser: 'babel-eslint'
@@ -19,7 +19,7 @@ exports = module.exports = function (code, filePath) {
       parser: 'babel-eslint'
     })
   }
-  if (msg.fixed){
+  if (msg.fixed) {
     filePath && fs.writeFileSync(filePath, msg.output, 'utf-8')
   }
   return msg
