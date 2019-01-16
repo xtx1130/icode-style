@@ -1,7 +1,7 @@
 # tbformat
 
 > 产出符合icode规范的js和css代码
-> 
+
 ## 安装
 
 ```shell
