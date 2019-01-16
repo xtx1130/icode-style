@@ -3,7 +3,7 @@
 > 产出符合icode规范的js和css代码
 
 [![Build Status](https://travis-ci.org/xtx1130/icode-style.svg?branch=master)](https://travis-ci.org/xtx1130/icode-style) 
-[![license](https://img.shields.io/github/license/xtx1130/icode-style.svg?style=popout)]
+![license](https://img.shields.io/github/license/xtx1130/icode-style.svg?style=popout)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 ## 安装
 
