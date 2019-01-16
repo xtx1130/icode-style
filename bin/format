@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
+const path = require('path')
 const parseArgs = require('minimist')
 const fse = require('fs-extra')
 const klaw = require('klaw')
@@ -14,6 +15,16 @@ const log = new Log('lint', false)
 const argv = parseArgs(process.argv.slice(2))
 let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|output|dist|BCLOUD|package\\.json|build\\.js|ci\\.yml|readme|favicon\\.ico|\\.map$'
 
+let pkgInfo
+try {
+  pkginfo = require(path.join(process.cwd(), 'package.json')).tbformat
+  if(Array.isArray(pkginfo))
+    pkginfo = pkginfo.join('|')
+  expectFiles = expectFiles + '|' + pkginfo
+} catch (e) {
+  console.log(e)
+}
+console.log(expectFiles)
 const excludeFolder = through2.obj(function (item, enc, next) {
   if (!item.stats.isDirectory() && !item.path.match(new RegExp('(' + expectFiles + ')', 'ig'))) 
     this.push(item)
@@ -29,9 +40,13 @@ klaw(process.cwd()).pipe(excludeFolder)
       else
         msg = jsLint(baseCode)
       if(!msg.fixed && argv.fix){
+        if(msg.messages.length === 0){
+          log.warn(`${item.path} has been eslint-disable or it's a nodejs file`)
+          return
+        }
         log.error(`${item.path} format failed:`)
         for(let i = 0; i < msg.messages.length; i++) {
-          log.error('Line:' + msg.messages[i].line + ' ' + msg.messages[i].message)
+          log.error('Line:' + msg.messages[i].line + ' ' + msg.messages[i].ruleId + ' ' + msg.messages[i].message)
         }
       } else if(!argv.fix){
         log.warn(`${item.path} lint info:`)
