@@ -22,7 +22,7 @@ const lint = require('icode-style')
 
 /**
  * @param {String} code 需要lint的代码
- * @param {Boolean} isfix 是否需要修复，如果为否则返回Boolean类型（是否符合lint规范），如果未是则返回String类型（lint后的代码）
+ * @param {Boolean} isfix 是否需要修复，如果为false则返回Boolean类型（是否符合lint规范），如果为true则返回String类型（lint后的代码）
  * @return {Boolean|String} 
  */
 lint.cssLint(code, isfix)
@@ -36,7 +36,7 @@ lint.jsLint(code, filePath)
 
 /**
  * @param {String} code 需要lint的代码
- * @param {Boolean} isfix 是否需要修复，如果为否则返回Boolean类型（是否符合lint规范），如果未是则返回String类型（lint后的代码）
+ * @param {Boolean} isfix 是否需要修复，如果为false则返回Boolean类型（是否符合lint规范），如果为true则返回String类型（lint后的代码）
  * @return {Boolean|String} 
  */
 lint.vueLint(code, isfix)
