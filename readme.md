@@ -1,11 +1,11 @@
-# tbformat
+# tb-format
 
 > 产出符合icode规范的js和css代码
 
 ## 安装
 
 ```shell
-$ npm i git+https://github.com/xtx1130/icode-style
+$ npm i tb-format
 ```
 
 ## 使用
