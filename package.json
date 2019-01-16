@@ -8,7 +8,7 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "cd test && node lint.test.js",
-    "lint": "standard **/*.js --verbose --fix"
+    "lint": "standard src/*.js --verbose --fix"
   },
   "keywords": [
     "icode",
