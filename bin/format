@@ -22,9 +22,8 @@ try {
     pkginfo = pkginfo.join('|')
   expectFiles = expectFiles + '|' + pkginfo
 } catch (e) {
-  console.log(e)
+
 }
-console.log(expectFiles)
 const excludeFolder = through2.obj(function (item, enc, next) {
   if (!item.stats.isDirectory() && !item.path.match(new RegExp('(' + expectFiles + ')', 'ig'))) 
     this.push(item)
