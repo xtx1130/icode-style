@@ -47,7 +47,7 @@ klaw(process.cwd()).pipe(excludeFolder)
         for(let i = 0; i < msg.messages.length; i++) {
           log.error('Line:' + msg.messages[i].line + ' ' + msg.messages[i].ruleId + ' ' + msg.messages[i].message)
         }
-        log.start('----------')
+        log.info('----------')
       } else if(!argv.fix){
         log.warn(`${item.path} lint info:`)
         for (let i = 0;i < msg.length; i++) {
