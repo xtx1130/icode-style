@@ -48,6 +48,6 @@ lint.vueLint(code, isfix)
 可以在`pacakge.json`中配置ignore的文件或者路径，配置如下:
 ```json
 {
-    "tbformat": [".postcssrc.js", "coverage/"]
+    "tbformat": [".postcssrc.js", "coverage/"] // 本项目只想做开箱即用性质的，主要对接icode style 所以不想加过多配置项
 }
 ```
