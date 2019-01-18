@@ -40,7 +40,7 @@ klaw(process.cwd()).pipe(excludeFolder)
         msg = jsLint(baseCode)
       if(!msg.fixed && argv.fix){
         if(msg.messages.length === 0){
-          log.warn(`${item.path} has been eslint-disable or it's a nodejs file`)
+          // log.warn(`${item.path} has been eslint-disable or it's a nodejs file`)
           return
         }
         log.error(`${item.path} format failed:`)
