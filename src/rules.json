@@ -71,7 +71,7 @@
     "no-compare-neg-zero": "error",
     "no-cond-assign": "error",
     "no-confusing-arrow": ["off", {"allowParens": true}],
-    "no-console": "warn",
+    "no-console": "off",
     "no-const-assign": "off",
     "no-constant-condition": "error",
     "no-continue": "off",
