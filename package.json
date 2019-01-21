@@ -1,6 +1,6 @@
 {
   "name": "tb-format",
-  "version": "2.0.9",
+  "version": "2.0.11",
   "description": "icode code style standard",
   "bin": {
     "tbformat": "./bin/format"
