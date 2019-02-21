@@ -14,7 +14,7 @@ const vueLint = require('../src/vueLint')
 
 const log = new Log('lint', false)
 const argv = parseArgs(process.argv.slice(2))
-let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|BCLOUD|package\\.json|ci\\.yml|readme|favicon\\.ico|\\.map$'
+let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|BCLOUD|output|dist|package\\.json|ci\\.yml|readme|favicon\\.ico|\\.map$'
 
 let pkgInfo
 try {
