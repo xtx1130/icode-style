@@ -46,8 +46,9 @@ lint.vueLint(code, isfix)
 ```
 ### ignore
 可以在`pacakge.json`中配置ignore的文件或者路径，配置如下:
-```json
+```js
 {
     "tbformat": [".postcssrc.js", "coverage/"] // 本项目只想做开箱即用性质的，主要对接icode style 所以不想加过多配置项
 }
 ```
+**版本差异: 2.x 版本 tbformat 为RegExp, 3.x版本优化为glob**
