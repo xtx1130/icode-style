@@ -6,6 +6,7 @@ const parseArgs = require('minimist')
 const fse = require('fs-extra')
 const klaw = require('klaw')
 const through2 = require('through2')
+const mm = require('micromatch')
 const Log = require('@xtx1130/tb-log').Log
 const jsLint = require('../src/jslint')
 const cssLint = require('../src/csslint')
@@ -13,20 +14,21 @@ const vueLint = require('../src/vueLint')
 
 const log = new Log('lint', false)
 const argv = parseArgs(process.argv.slice(2))
-let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|output|dist|BCLOUD|package\\.json|ci\\.yml|readme|favicon\\.ico|\\.map$'
+let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|BCLOUD|package\\.json|ci\\.yml|readme|favicon\\.ico|\\.map$'
 
 let pkgInfo
 try {
   pkginfo = require(path.join(process.cwd(), 'package.json')).tbformat
-  if(Array.isArray(pkginfo))
-    pkginfo = pkginfo.join('|')
-  expectFiles = expectFiles + '|' + pkginfo
+  if(!Array.isArray(pkginfo) || !pkginfo.length)
+    throw new Error('tbformat must be an Array.')
 } catch (e) {
-
+  Log.error(e.message)
 }
 const excludeFolder = through2.obj(function (item, enc, next) {
-  if (!item.stats.isDirectory() && !item.path.match(new RegExp('(' + expectFiles + ')', 'ig'))) 
-    this.push(item)
+  if (!item.stats.isDirectory() && !item.path.match(new RegExp('(' + expectFiles + ')', 'ig'))){
+    if(!mm.isMatch(item.path, pkginfo))
+      this.push(item)
+  }
   next()
 })
 klaw(process.cwd()).pipe(excludeFolder)
