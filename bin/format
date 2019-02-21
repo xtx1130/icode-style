@@ -17,16 +17,21 @@ const argv = parseArgs(process.argv.slice(2))
 let expectFiles = 'DS_Store|\\.git|deploy-conf|node_modules|BCLOUD|output|dist|package\\.json|ci\\.yml|readme|favicon\\.ico|\\.map$'
 
 let pkgInfo
+let jsErrorFlag = false
 try {
   pkginfo = require(path.join(process.cwd(), 'package.json')).tbformat
-  if(!Array.isArray(pkginfo) || !pkginfo.length)
+  if(pkginfo === undefined)
+    log.info('This project don\'t has tbformat config.')
+  else if(!Array.isArray(pkginfo) || !pkginfo.length)
     throw new Error('tbformat must be an Array.')
 } catch (e) {
-  Log.error(e.message)
+  log.warn(e.message)
 }
 const excludeFolder = through2.obj(function (item, enc, next) {
   if (!item.stats.isDirectory() && !item.path.match(new RegExp('(' + expectFiles + ')', 'ig'))){
-    if(!mm.isMatch(item.path, pkginfo))
+    if(pkgInfo && !mm.isMatch(item.path, pkginfo))
+      this.push(item)
+    else if(!pkgInfo)
       this.push(item)
   }
   next()
@@ -49,6 +54,7 @@ klaw(process.cwd()).pipe(excludeFolder)
         for(let i = 0; i < msg.messages.length; i++) {
           log.error('Line:' + msg.messages[i].line + ' ' + msg.messages[i].ruleId + ' ' + msg.messages[i].message)
         }
+        jsErrorFlag = true
         log.info('----------')
       } else if(!argv.fix){
         log.warn(`${item.path} lint info:`)
@@ -74,3 +80,4 @@ klaw(process.cwd()).pipe(excludeFolder)
       argv.fix && fs.writeFileSync(item.path, output, {encoding: 'utf-8'})
     }
   })
+  .on('end', () => jsErrorFlag ? process.exit(1) : process.exit(0))
